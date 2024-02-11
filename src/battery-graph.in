@@ -184,8 +184,10 @@ ZERO_BIOS_ESTIMATE=`tail -n 1 $TMPFILENAME | awk '{ print $6 }'`
 
 
 (   
-    if $text ; then
-	echo set terminal dumb ${COLUMNS:-$(tput cols)} ${LINES:-$(tput lines)}
+	if $text ; then
+        echo set terminal dumb ${COLUMNS:-$(tput cols)} ${LINES:-$(tput lines)}
+    else
+        echo set terminal qt title \"${title}\"
     fi
 
     echo call \"${libdir}/graph-setup\" 
@@ -219,7 +221,7 @@ ZERO_BIOS_ESTIMATE=`tail -n 1 $TMPFILENAME | awk '{ print $6 }'`
 		echo ", g(x -($TIME_LAST_DISCHARGE_BEGIN-$adjustment) ) title (B<0?sprintf(\"slope= (%.2f +/- %.2f) %/h\", B*3600, B_err*3600):\"\") lc rgb \"black\" lt 2 "
     fi
     
-)  | gnuplot -persist ${geometry:+-geometry} $geometry ${title:+-title} "${title}" ; rm -f $TMPFILENAME
+)  | gnuplot -persist ${geometry:+-geometry} $geometry ; rm -f $TMPFILENAME
 
 
 # TODO Have to decide if we want to clean up or leave the file for us to zoom in/out in the graph
